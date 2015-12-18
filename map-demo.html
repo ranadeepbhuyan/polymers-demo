@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>Google Map demo</title>
+  <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
+  <link rel="import" href="../google-map.html">
+  <link rel="import" href="../google-map-marker.html">
+  <link rel="import" href="../google-map-poly.html">
+  <link rel="import" href="../google-map-directions.html">
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+    }
+    #controlsToggle {
+      position: absolute;
+      left: 10%;
+      bottom: 10%;
+    }
+  </style>
+</head>
+<body class="fullbleed">
+<google-map latitude="12.924" longitude="77.6779" min-zoom="12" max-zoom="22"
+            language="en">
+  <!--google-map-marker latitude="12.924" longitude="77.6779"
+                     title="Go Giants!" draggable="true">
+    <img src="https://www.drupal.org/files/project-images/Intuit_Profile_Image.jpg" / >
+  </google-map-marker> 
+
+  -->
+  <google-map-marker latitude="12.9267275" longitude="77.67022"
+                     title="Air and water Polution" draggable="true">
+    <img src="https://www.drupal.org/files/project-images/Intuit_Profile_Image.jpg" / >
+  </google-map-marker>
+
+  <google-map-poly closed fill-color="red" fill-opacity=".25" stroke-weight="1">
+    <google-map-point latitude="12.9409276" longitude="77.701913"></google-map-point>
+    <google-map-point latitude="12.9356575" longitude="77.6809274"></google-map-point>
+    <google-map-point latitude="12.9126939" longitude="77.6939307"></google-map-point>
+  </google-map-poly>
+
+  <google-map-marker latitude="12.9260164" longitude="77.6864635"
+                     title="Stuck on the road often!" draggable="true">
+    <img src="http://bangalore.citizenmatters.in/uploads/picture/image/14897/pic_article_ORR-FrontOf-RMZ-Ecospace-4.jpg" / >
+  </google-map-marker>
+  <google-map-poly closed fill-color="red" fill-opacity=".25" stroke-weight="1">
+    <google-map-point latitude="12.9259328" longitude="77.6694904"></google-map-point>
+    <google-map-point latitude="12.9271667" longitude="77.6528178"></google-map-point>
+    <google-map-point latitude="12.9425379" longitude="77.6787387"></google-map-point>
+  </google-map-poly>
+
+
+</google-map>
+
+<!--google-map-directions start-address="Bangalore" end-address="Mysore"
+            language="en"></google-map-directions -->
+
+<!--
+<google-map latitude="37.779" longitude="-122.3892" min-zoom="9" max-zoom="11"
+            language="en">
+  <google-map-marker latitude="37.779" longitude="-122.3892"
+                     title="Go Giants!" draggable="true">
+  </google-map-marker>
+  <google-map-poly closed fill-color="red" fill-opacity=".25" stroke-weight="1">
+    <google-map-point latitude="37.779" longitude="-122.3892"></google-map-point>
+    <google-map-point latitude="37.804" longitude="-122.2711"></google-map-point>
+    <google-map-point latitude="37.386" longitude="-122.0837"></google-map-point>
+  </google-map-poly>
+</google-map>
+
+<google-map-directions start-address="Delhi" end-address="Jaipur"
+            language="en"></google-map-directions>
+-->
+<button id="controlsToggle" onclick="toggleControls()">Toggle controls</button>
+
+<script>
+  var gmap = document.querySelector('google-map');
+  gmap.addEventListener('api-load', function(e) {
+    document.querySelector('google-map-directions').map = this.map;
+  });
+
+  function toggleControls() {
+    gmap.disableDefaultUi = !gmap.disableDefaultUi;
+  }
+</script>
+</body>
+</html>
