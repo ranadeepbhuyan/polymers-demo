@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html ng-app='app'>
+  <head>
+    <title>Two -way data Bindings</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/0.6.1/webcomponents-lite.min.js"></script>
+    <link rel='import' href='./components/name-card/name-card.html' />
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <h2>!(Angular Vs Polymer)</h2>
+        <h2>...... it's</h2>
+        <h2>Angular and Polymer</h2>
+        <br/>
+        <p> <p> I am an Angular View. </p>
+          <label for="f_name">First Name:</label>
+          <input type="text" ng-model="f_name">
+        </p>
+        <p>
+          <label for="l_name">Last Name:</label>
+          <input type="text" ng-model="l_name">
+        </p>
+        <!-- Polymer Bame Car-->
+        <div style="border:solid 1px red"><p> I am a Polymer. </p>
+        <name-card first="{{f_name}}" last="{{l_name}}" bind-polymer></name-card>
+        </div>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script>
+    angular
+    .module('app', [])
+    .directive('bindPolymer', ['$parse', function($parse) {
+      return {
+        restrict: 'A',
+        scope : false,
+        compile: function bindPolymerCompile(el, attr) {
+          var attrMap = {};
+
+          for (var prop in attr) {
+            if (angular.isString(attr[prop])) {
+              var _match = attr[prop].match(/\{\{\s*([\.\w]+)\s*\}\}/);
+              if (_match) {
+                attrMap[prop] = $parse(_match[1]);
+              }
+            }
+          }
+          return function bindPolymerLink(scope, element, attrs) {
+
+            // When Polymer sees a change to the bound variable,
+            // $apply / $digest the changes here in Angular
+            var observer = new MutationObserver(function polymerMutationObserver(mutations) {
+              scope.$apply(function processMutationsHandler() {
+                mutations.forEach(function processMutation(mutation) {
+
+                  var attributeName, newValue, oldValue, getter;
+                  attributeName = mutation.attributeName;
+
+                  if(attributeName in attrMap) {
+                    newValue = element.attr(attributeName);
+                    getter = attrMap[attributeName];
+                    oldValue = getter(scope);
+
+                    if(oldValue != newValue && angular.isFunction(getter.assign)) {
+                      getter.assign(scope, newValue);
+                    }
+                  }
+                });
+              });
+            });
+
+            observer.observe(element[0], {attributes: true});
+            scope.$on('$destroy', observer.disconnect.bind(observer));
+          }
+        }
+      };
+    }]);
+    </script>
+  </body>
+</html>
